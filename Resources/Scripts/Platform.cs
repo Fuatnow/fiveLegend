@@ -5,7 +5,8 @@ public class Platform
 	enum CMD_ID
 	{
 		KEY_BACK = 0,
-		DO_RATE
+		DO_RATE,
+		DO_FEEDBACK
 	};
 
 	private static Platform _instance = null;
@@ -25,16 +26,25 @@ public class Platform
 	{
 		if ( Application.platform == RuntimePlatform.Android &&(Input.GetKeyDown(KeyCode.Escape)))
 		{
-			var exitDialog = GameObject.Instantiate(Resources.Load ("Prefab/exitDialog")) as GameObject;
+//			var exitDialog = GameObject.Instantiate(Resources.Load ("Prefab/exitDialog")) as GameObject;
 			//NativeMethod().Call("jni_called",new object[]{(int)CMD_ID.KEY_BACK,0});
 		}
 	}
 
 	public void doRate()
 	{
+		doFeedBack ();
+//		if ( Application.platform == RuntimePlatform.Android)
+//		{
+//			NativeMethod().Call("jni_called",new object[]{(int)CMD_ID.DO_RATE,0});
+//		}
+	}
+
+	public void doFeedBack()
+	{
 		if ( Application.platform == RuntimePlatform.Android)
 		{
-			NativeMethod().Call("jni_called",new object[]{(int)CMD_ID.DO_RATE,0});
+			NativeMethod().Call("jni_called",new object[]{(int)CMD_ID.DO_FEEDBACK,0});
 		}
 	}
 

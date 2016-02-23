@@ -30,6 +30,9 @@
         <activity android:name="com.google.android.gms.ads.AdActivity"
             android:configChanges="keyboard|keyboardHidden|orientation|screenLayout|uiMode|screenSize|smallestScreenSize"
             android:theme="@android:style/Theme.Translucent" />
+
+        <activity android:name="com.umeng.fb.ConversationActivity"/>
+        <meta-data android:value="5644bf5f67e58ecf350009ab" android:name="UMENG_APPKEY"/>
     </application>
     
    <!-- 检测联网方式，区分用户设备使用的是2G、3G或是WiFi  --> 
@@ -40,4 +43,5 @@
     <uses-permission android:name="android.permission.READ_PHONE_STATE"/> 
    <!-- 如果您的应用会运行在无法读取IMEI的平板上，我们会将mac地址作为用户的唯一标识 -->
     <uses-permission android:name="android.permission.ACCESS_WIFI_STATE"/>
+    <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
 </manifest>
