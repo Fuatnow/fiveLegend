@@ -5,14 +5,16 @@ public class GameCamera : MonoBehaviour
 {
 	public float winWidth = 0;
 	public float winHeight = 0;
+	public static GameCamera instance = null;
 	
-	//float devHeight = 12.8f;
+	float devHeight = 12.8f;
 	float devWidth = 7.2f;
 
 	// Use this for initialization
 	void Awake () 
 	{
 		Singleton.getInstance ("gameConfig");
+		instance = this;
 		//float screenWidth = Screen.width;
 		float screenHeight = Screen.height;
 		
@@ -38,5 +40,10 @@ public class GameCamera : MonoBehaviour
 		winHeight = orthographicSize * 200;
 		winWidth = winHeight * aspectRatio;
 		print ("winHeight:" + winHeight + " winWidth:" + winWidth);
+	}
+
+	public float getDisResolutionHeight()
+	{
+		return winHeight/100 - devHeight;
 	}
 }

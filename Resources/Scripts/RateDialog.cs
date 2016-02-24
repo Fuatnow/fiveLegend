@@ -77,4 +77,14 @@ public class RateDialog : MonoBehaviour {
 		Destroy(gameObject);
 		GA.Event ("btn_rate_cancel", null, 0);
 	}
+
+	void grayStar_callBack()
+	{
+		
+	}
+
+	void lightStar_callBack()
+	{
+		
+	}
 }
