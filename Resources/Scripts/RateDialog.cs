@@ -16,14 +16,18 @@ public class RateDialog : MonoBehaviour {
 	public delegate void OkCallBack<T>(T data);
 	private OkCallBack<string> _okCallBack = null;
 	private OkCallBack<string> _cancelCallBack = null;
+
+	public GameObject[] grayStarArray ;
+	public GameObject[] ligthStarArray ;
+	public tk2dSprite evaluateSp = null;
 	
 	
 	// Use this for initialization
 	void Awake () 
 	{
-		message = transform.Find ("message").gameObject.GetComponent<tk2dTextMesh>();
-		title = transform.Find ("title/Text").gameObject.GetComponent<tk2dTextMesh>();
-		okLabel = transform.Find ("okBtn/ButtonGraphic/Text").gameObject.GetComponent<tk2dTextMesh>();
+		message = transform.Find ("bg/message").gameObject.GetComponent<tk2dTextMesh>();
+		title = transform.Find ("bg/title/Text").gameObject.GetComponent<tk2dTextMesh>();
+		okLabel = transform.Find ("bg/okBtn/ButtonGraphic/Text").gameObject.GetComponent<tk2dTextMesh>();
 		bg = transform.Find ("bg").gameObject.GetComponent<tk2dSlicedSprite>();
 		
 		if(Application.systemLanguage == SystemLanguage.English)
@@ -42,10 +46,31 @@ public class RateDialog : MonoBehaviour {
 		messagePos.x = posX;
 		message.transform.localPosition = messagePos;
 
-		gameObject.transform.localScale = Vector3.zero;
+		bg.transform.localScale = Vector3.zero;
 		var seq = DOTween.Sequence ();
-		var move = gameObject.transform.DOScale (1.0f, 0.2f).SetEase(Ease.OutQuad);
-		seq.AppendInterval (1.0f).Append (move);
+		var move = bg.transform.DOScale (1.0f, 0.2f).SetEase(Ease.OutQuad);
+		seq.AppendInterval (0.3f).Append (move);
+
+		int i = 0;
+		foreach (var gStar in grayStarArray) 
+		{
+			var tk2dItem = gStar.gameObject.GetComponent<tk2dUIItem>();
+			tk2dItem.OnClickUIItem += grayStar_callBack;
+			gStar.name = (i++).ToString();
+		}
+
+
+		i = 0;
+		foreach (var lStar in ligthStarArray) 
+		{
+			var tk2dItem = lStar.gameObject.GetComponent<tk2dUIItem>();
+			tk2dItem.OnClickUIItem += lightStar_callBack;
+			lStar.name = (i++).ToString();
+			if (i == 5) 
+			{
+				lStar.SetActive (false);
+			}
+		}
 	}
 	
 	public void setOkCallBack(OkCallBack<string> callBack)
@@ -60,7 +85,7 @@ public class RateDialog : MonoBehaviour {
 	
 	void okCallBack()
 	{
-		if (_okCallBack != null) 
+		if (_okCallBack != null && getRate() >= 4) 
 		{
 			_okCallBack ("okCallBack");
 		}
@@ -78,13 +103,44 @@ public class RateDialog : MonoBehaviour {
 		GA.Event ("btn_rate_cancel", null, 0);
 	}
 
-	void grayStar_callBack()
+	void grayStar_callBack(tk2dUIItem item)
 	{
-		
+		Debug.Log ("grayStar_callBack");
+		int lightNum = int.Parse (item.name);
+		for(int i=0;i<5;i++)
+		{
+			ligthStarArray[i].SetActive (i <= lightNum || i==0);
+		}
+		updateEvaluateText (lightNum+1);
 	}
 
-	void lightStar_callBack()
+	void lightStar_callBack(tk2dUIItem item)
 	{
-		
+		Debug.Log ("lightStar_callBack");
+		int lightNum = int.Parse (item.name);
+		for(int i=0;i<5;i++)
+		{
+			ligthStarArray[i].SetActive (i < lightNum || i==0);
+		}
+		updateEvaluateText (Mathf.Max(0,lightNum-1)+1);
+	}
+
+	void updateEvaluateText(int starNum)
+	{
+		string str = string.Format ("choose_{0:00}", starNum);
+		evaluateSp.SetSprite (str);
+	}
+
+	int getRate()
+	{
+		int num = 0;
+		foreach(var item in ligthStarArray)
+		{
+			if (item.activeSelf) 
+			{
+				num++;
+			}
+		}
+		return num;
 	}
 }

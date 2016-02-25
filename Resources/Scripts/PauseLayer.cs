@@ -98,9 +98,15 @@ public class PauseLayer : MonoBehaviour {
 	void rate_callBack()
 	{
 		Debug.Log ("rate_callBack");
-		Platform.getInstance().doRate();
 		Singleton.getInstance("audioManager").GetComponent<AudioManager>().playAudio ("tap");
 		GA.Event ("btn_rate", null, 0);
+
+		var tipDialog = Instantiate(Resources.Load ("Prefab/rateDialog")) as GameObject;
+		tipDialog.transform.parent = transform;
+		tipDialog.GetComponent<RateDialog> ().setOkCallBack (new RateDialog.OkCallBack<string>( (data)=>{
+			Debug.Log("return data: "+data);
+			Platform.getInstance().doRate();
+		}));
 	}
 
 	void share_callBack()
@@ -115,7 +121,7 @@ public class PauseLayer : MonoBehaviour {
 		AdManager.getInstance ().showBanner ();
 		PlayerPrefs.SetInt ("needResume", 0);
 		Application.LoadLevel (0);
-
+//		UnityEngine.SceneManager.LoadScene (0);
 
 		//如果超过四盘且当前分数大于1000
 		var playTimes = GameData.getInstance ().PlayTimes;
