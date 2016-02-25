@@ -115,6 +115,13 @@ public class PauseLayer : MonoBehaviour {
 		Singleton.getInstance("audioManager").GetComponent<AudioManager>().playAudio ("tap");
 	}
 
+	void feedback_callBack()
+	{
+		Debug.Log ("feedback_callBack");
+		GA.Event ("btn_feedback", null, 0);
+		Platform.getInstance ().doFeedBack ();
+	}
+
 	void restart_callBack()
 	{
 		Debug.Log ("restart_callBack");

@@ -26,8 +26,8 @@ public class Platform
 	{
 		if ( Application.platform == RuntimePlatform.Android &&(Input.GetKeyDown(KeyCode.Escape)))
 		{
-//			var exitDialog = GameObject.Instantiate(Resources.Load ("Prefab/exitDialog")) as GameObject;
-			//NativeMethod().Call("jni_called",new object[]{(int)CMD_ID.KEY_BACK,0});
+			var exitDialog = GameObject.Instantiate(Resources.Load ("Prefab/exitDialog")) as GameObject;
+//			NativeMethod().Call("jni_called",new object[]{(int)CMD_ID.KEY_BACK,0});
 		}
 	}
 
