@@ -11,6 +11,8 @@ public class RankLayer : MonoBehaviour
 	private GameObject nickNameLabel = null;
 	private GameObject bestScoreLabel = null;
 	public GameObject scorllViewControll = null;
+	public GameObject waitDialog = null;
+	public GameObject loadFailDialog = null;
 	// Use this for initialization
 	void Awake () 
 	{
@@ -38,6 +40,10 @@ public class RankLayer : MonoBehaviour
 		nickNameLabel.GetComponent<tk2dTextMesh> ().text = name;
 		var score = PlayerPrefs.GetInt ("bestScore", 0);
 		bestScoreLabel.GetComponent<tk2dTextMesh> ().text = score+"";
+		if (waitDialog)
+			waitDialog.SetActive (true);
+		if (loadFailDialog)
+			loadFailDialog.SetActive (true);
 		getRankData ();
 	}
 
@@ -49,6 +55,8 @@ public class RankLayer : MonoBehaviour
 			if (exception != null) 
 			{
 				print ("调用失败, 失败原因为： " + exception.Message);
+				waitDialog.SetActive(false);
+				loadFailDialog.SetActive(true);
 				return;
 			}
 			rank_callBack(resp.data);

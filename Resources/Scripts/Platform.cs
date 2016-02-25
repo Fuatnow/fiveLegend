@@ -33,11 +33,10 @@ public class Platform
 
 	public void doRate()
 	{
-		doFeedBack ();
-//		if ( Application.platform == RuntimePlatform.Android)
-//		{
-//			NativeMethod().Call("jni_called",new object[]{(int)CMD_ID.DO_RATE,0});
-//		}
+		if ( Application.platform == RuntimePlatform.Android)
+		{
+			NativeMethod().Call("jni_called",new object[]{(int)CMD_ID.DO_RATE,0});
+		}
 	}
 
 	public void doFeedBack()
