@@ -17,10 +17,22 @@ public class LoadFail : MonoBehaviour {
 
 	void Start () 
 	{
+		reLoadFailAct ();
+	}
+
+
+
+
+	public void reLoadFailAct()
+	{
+		gameObject.SetActive (true);
 		Sequence run = DOTween.Sequence();
-		var move = bg.transform.DOMoveY (0,0.5f);
+		var pos = bg.transform.position;
+		pos.y = -7.2f;
+		bg.transform.position = pos;
+		var move = bg.transform.DOMoveY (0,0.3f);
 		var fade = DOTween.ToAlpha (() => bg.color, x => bg.color = x, 0.2f, 0.2f);
-		run.Append(move).AppendInterval (2.5f).Append (fade).AppendCallback (() => {
+		run.Append(move).AppendInterval (1.8f).Append (fade).AppendCallback (() => {
 			bg.color = new Color(bg.color.r,bg.color.g,bg.color.b,1.0f);
 			gameObject.SetActive(false);
 			transform.parent.gameObject.SetActive(false);

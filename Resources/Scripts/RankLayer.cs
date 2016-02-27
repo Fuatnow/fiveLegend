@@ -13,6 +13,7 @@ public class RankLayer : MonoBehaviour
 	public GameObject scorllViewControll = null;
 	public GameObject waitDialog = null;
 	public GameObject loadFailDialog = null;
+	private int sendTimes = 0;
 	// Use this for initialization
 	void Awake () 
 	{
@@ -33,7 +34,6 @@ public class RankLayer : MonoBehaviour
 //			mLabel.text = "Score";
 //		}
 	}
-
 	public void updateView()
 	{
 		var name = PlayerPrefs.GetString ("nickName","Player");
@@ -42,24 +42,31 @@ public class RankLayer : MonoBehaviour
 		bestScoreLabel.GetComponent<tk2dTextMesh> ().text = score+"";
 		if (waitDialog)
 			waitDialog.SetActive (true);
-		if (loadFailDialog)
-			loadFailDialog.SetActive (true);
 		getRankData ();
 	}
 
 	void getRankData()
 	{
 		Debug.Log ("getRankData");
+		NotificationCenterExtra.DefaultCenter ().RemoveObserver ("sendTimes"+sendTimes.ToString(), rank_callBack);
+		sendTimes++;
+		NotificationCenterExtra.DefaultCenter ().AddObserver ("sendTimes"+sendTimes.ToString(), rank_callBack);
 		var rankCallBack = new BmobCallback<EndPointCallbackData<Hashtable>> (
 			(resp, exception) =>{
+			if(waitDialog != null)
+			{
+				waitDialog.SetActive(false);
+			}
 			if (exception != null) 
 			{
 				print ("调用失败, 失败原因为： " + exception.Message);
-				waitDialog.SetActive(false);
-				loadFailDialog.SetActive(true);
+				if(loadFailDialog != null)
+				{
+					loadFailDialog.GetComponent<LoadFail>().reLoadFailAct();
+				}
 				return;
 			}
-			rank_callBack(resp.data);
+			NotificationCenterExtra.DefaultCenter ().PostNotification("sendTimes"+sendTimes.ToString(),0,resp.data);
 		});
 		var objectId = BombTool.instance.ObjectId;
 		if(objectId.Length > 0)
@@ -72,8 +79,9 @@ public class RankLayer : MonoBehaviour
 		}
 	}
 
-	void rank_callBack(Hashtable hashTab)
+	void rank_callBack(object test , object data)
 	{
+		Hashtable hashTab = (Hashtable)data;
 		// 遍历哈希表
 		foreach (DictionaryEntry de in hashTab)
 		{
@@ -219,4 +227,11 @@ public class RankLayer : MonoBehaviour
 		gameObject.SetActive (false);
 	}
 
+
+	void OnDestroy()
+	{
+		waitDialog = null;
+		loadFailDialog = null;
+		NotificationCenterExtra.DefaultCenter ().RemoveObserver ("sendTimes"+sendTimes.ToString(), rank_callBack);
+	}
 }
