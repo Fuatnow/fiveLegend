@@ -20,7 +20,7 @@ public class GameBoard : MonoBehaviour
 	private GameObject curGird = null;
 	private static float backgroundPosY = -0.3f;
 	private Vector3 nextGirdPos = new Vector3(2.7f,backgroundPosY+4.05f,0);
-	private Vector3 curScorePos = new Vector3(2.75f,7.0f,0);
+	private Vector3 curScorePos = new Vector3(2.75f,7.0f,-0.1f);
 	private float girdWidth = 0.9f;
 	private float girdHeight = 0.9f;
 	private bool canDropDown = false;
