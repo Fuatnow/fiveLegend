@@ -6,7 +6,10 @@ public class Platform
 	{
 		KEY_BACK = 0,
 		DO_RATE,
-		DO_FEEDBACK
+		DO_FEEDBACK,
+		DO_SHOWBANNER,
+		DO_HIDEBANNER,
+		DO_SHOWINTERSTITAL
 	};
 
 	private static Platform _instance = null;
@@ -36,6 +39,30 @@ public class Platform
 		if ( Application.platform == RuntimePlatform.Android)
 		{
 			NativeMethod().Call("jni_called",new object[]{(int)CMD_ID.DO_RATE,0});
+		}
+	}
+
+	public void doShowBanner()
+	{
+		if ( Application.platform == RuntimePlatform.Android)
+		{
+			NativeMethod().Call("jni_called",new object[]{(int)CMD_ID.DO_SHOWBANNER,0});
+		}
+	}
+
+	public void doHideBanner()
+	{
+		if ( Application.platform == RuntimePlatform.Android)
+		{
+			NativeMethod().Call("jni_called",new object[]{(int)CMD_ID.DO_HIDEBANNER,0});
+		}
+	}
+
+	public void doShowInterstital()
+	{
+		if ( Application.platform == RuntimePlatform.Android)
+		{
+			NativeMethod().Call("jni_called",new object[]{(int)CMD_ID.DO_SHOWINTERSTITAL,0});
 		}
 	}
 

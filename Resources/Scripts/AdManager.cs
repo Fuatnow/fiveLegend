@@ -1,4 +1,6 @@
 ﻿#define USE_ADMOB
+//#undef USE_ADMOB
+#define USE_GDT
 using UnityEngine;
 using System.Collections;
 public class AdManager
@@ -30,8 +32,8 @@ public class AdManager
 		#if USE_ADMOB
 		AdmobManager.getInstance ().requestBanner ();
 		AdmobManager.getInstance ().requestInterstitial ();
-//		#elif
-			
+//		#else
+
 		#endif
 	}
 
@@ -40,8 +42,8 @@ public class AdManager
 	{
 		#if USE_ADMOB
 		AdmobManager.getInstance ().showBanner();
-//		#elif
-
+		#else
+		Platform.getInstance().doShowBanner();
 		#endif
 	}
 
@@ -49,8 +51,8 @@ public class AdManager
 	{
 		#if USE_ADMOB
 		AdmobManager.getInstance ().showInterstitial ();
-//		#elif
-
+		#else
+		Platform.getInstance().doShowInterstital();
 		#endif
 	}
 
@@ -58,8 +60,8 @@ public class AdManager
 	{
 		#if USE_ADMOB
 		AdmobManager.getInstance ().hideBanner ();
-//		#elif
-
+		#else
+		Platform.getInstance().doHideBanner();
 		#endif
 	}
 }
